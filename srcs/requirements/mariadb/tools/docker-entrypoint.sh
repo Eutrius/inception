@@ -3,10 +3,11 @@ set -e
 
 export MARIA_PASSWORD=$(cat /run/secrets/maria_password)
 export MARIA_ROOT_PASSWORD=$(cat /run/secrets/maria_root_password)
+export MARIA_PORT="${WP_HOST#*:}"
 
 mariadbd-safe &
 
-until nc -z localhost 3306; do
+until nc -z localhost $MARIA_PORT; do
 	echo "waiting for mariadb"
 	sleep 1
 done

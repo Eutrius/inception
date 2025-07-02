@@ -4,8 +4,10 @@ set -e
 export MARIA_PASSWORD=$(cat /run/secrets/maria_password)
 export WP_USER_PASSWORD=$(cat /run/secrets/wp_user_password)
 export WP_ADMIN_PASSWORD=$(cat /run/secrets/wp_admin_password)
+export MARIA_IP="${WP_HOST%%:*}"
+export MARIA_PORT="${WP_HOST#*:}"
 
-until nc -z mariadb 3306; do
+until nc -z $MARIA_IP $MARIA_PORT; do
 	echo "waiting for mariadb"
 	sleep 1
 done
