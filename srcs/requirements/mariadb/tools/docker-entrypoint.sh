@@ -19,5 +19,5 @@ mariadb -u root -p${MARIA_ROOT_PASSWORD} -e "FLUSH PRIVILEGES;"
 echo "shutdown the server"
 mariadb-admin -u root -p"${MARIA_ROOT_PASSWORD}" shutdown
 
-echo "start the server in safe mode"
+echo "starting maraidb"
 exec mariadbd-safe

@@ -16,8 +16,8 @@ COMPOSE_FILE = srcs/docker-compose.yml
 all: build up
 
 build:
-	@mkdir -p /home/$(USER)/data/wordpress
-	@mkdir -p /home/$(USER)/data/mariadb
+	@mkdir -p /home/jyriarte/data/wordpress
+	@mkdir -p /home/jyriarte/data/mariadb
 	@docker-compose -f $(COMPOSE_FILE) build
 
 up:
@@ -43,7 +43,7 @@ clean: down
 
 fclean: clean
 	@docker volume rm $$(docker volume ls -q) 2>/dev/null || true
-	@sudo rm -rf /home/$(USER)/data
+	@sudo rm -rf /home/jyriarte/data
 
 re: fclean all
 

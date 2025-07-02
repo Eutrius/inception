@@ -3,16 +3,15 @@ set -e
 
 sleep 10
 
-cd var/www/wordpress
-
 echo "wordpress create config"
 wp config create --allow-root \
 				 --dbname=$MARIA_DB_NAME \
 				 --dbuser=$MARIA_USER \
 				 --dbpass=$MARIA_PASSWORD \
-				 --dbhost=mariadb:3306
+				 --dbhost=$WP_HOST
 
 echo "wordpress install core"
+wp eval 'add_filter("wp_mail", "__return_false");'
 wp core install --allow-root \
 	            --url="$WP_URL" \
 				--title="$WP_TITLE" \

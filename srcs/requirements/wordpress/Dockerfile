@@ -21,5 +21,7 @@ COPY conf/www.conf /etc/php/7.4/fpm/pool.d/.
 COPY tools/docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
+WORKDIR /var/www/wordpress
+
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["php-fpm7.4", "-F"]
