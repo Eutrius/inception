@@ -1,14 +1,12 @@
 FROM debian:bullseye
 
-RUN apt-get update -y
-RUN apt-get install -y nginx openssl
-RUN rm -rf /var/lib/apt/lists/*
+RUN apt update -y && \
+    apt upgrade -y && \
+    apt install -y nginx openssl
 
-COPY conf/default.conf /etc/nginx/sites-available/default
+COPY conf/default /etc/nginx/sites-available/.
 COPY tools/docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-
-EXPOSE 443
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]

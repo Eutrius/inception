@@ -9,4 +9,5 @@ if [ ! -f /etc/ssl/certs/nginx.crt ]; then
         -subj "/C=US/ST=State/L=City/O=Organization/CN=jyriarte.42.fr"
 fi
 
+echo "starting nginx"
 exec "$@"

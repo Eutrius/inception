@@ -1,14 +1,14 @@
 FROM debian:bullseye
 
-RUN apt-get update -y
-RUN apt-get install -y mariadb-server
-RUN rm -rf /var/lib/apt/lists/*
+RUN apt update -y && \
+    apt upgrade -y && \
+    apt install -y mariadb-server
 
-COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/
+COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/.
 COPY tools/docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-EXPOSE 3306
+RUN mkdir -p /run/mysqld && \
+    chown -R root:root /run/mysqld
 
-ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["mysqld"]
+CMD ["docker-entrypoint.sh"]
