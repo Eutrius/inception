@@ -1,4 +1,8 @@
 #!/bin/bash
+set -e
+
+export MARIA_PASSWORD=$(cat /run/secrets/maria_password)
+export MARIA_ROOT_PASSWORD=$(cat /run/secrets/maria_root_password)
 
 mariadbd-safe &
 

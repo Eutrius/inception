@@ -1,11 +1,48 @@
-version: "3.3"
-
 services:
+  mariadb:
+    build: ./requirements/mariadb/.
+    image: requirements/mariadb:latest
+    deploy:
+      restart_policy:
+        condition: any
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - inception
+    env_file:
+      - .env
+    environment:
+      MARIA_PASSWORD: /run/secrets/maria_password
+      MARIA_ROOT_PASSWORD: /run/secrets/maria_root_password
+    secrets:
+      - maria_password
+      - maria_root_password
+
+  wordpress:
+    build: ./requirements/wordpress/.
+    image: requirements/wordpress:latest
+    volumes:
+      - wordpress_data:/var/www/wordpress
+    networks:
+      - inception
+    env_file:
+      - .env
+    deploy:
+      restart_policy:
+        condition: any
+    environment:
+      WP_HOST: mariadb:3306
+      MARIA_PASSWORD: /run/secrets/maria_password
+      WP_USER_PASSWORD: /run/secrets/wp_user_password
+      WP_ADMIN_PASSWORD: /run/secrets/wp_admin_password
+    secrets:
+      - maria_password
+      - wp_user_password
+      - wp_admin_password
+
   nginx:
-    build: requirements/nginx/.
-    container_name: nginx
-    depends_on:
-      - wordpress
+    build: ./requirements/nginx/.
+    image: requirements/nginx:latest
     ports:
       - "443:443"
     volumes:
@@ -14,46 +51,9 @@ services:
       - inception
     env_file:
       - .env
-    restart: unless-stopped
-
-  wordpress:
-    build: requirements/wordpress/.
-    container_name: wp-php
-    depends_on:
-      - mariadb
-    volumes:
-      - wordpress_data:/var/www/wordpress
-    networks:
-      - inception
-    env_file:
-      - .env
-    restart: unless-stopped
-    environment:
-      - WP_HOST=mariadb:3306
-      - MARIA_PASSWORD=/run/secrets/maria_password
-      - WP_USER_PASSWORD=/run/secrets/wp_user_password
-      - WP_ADMIN_PASSWORD=/run/secrets/wp_admin_password
-    secrets:
-      - maria_password
-      - wp_user_password
-      - wp_admin_password
-
-  mariadb:
-    build: requirements/mariadb/.
-    container_name: mariadb
-    restart: unless-stopped
-    volumes:
-      - mariadb_data:/var/lib/mysql
-    networks:
-      - inception
-    env_file:
-      - .env
-    environment:
-      - MARIA_PASSWORD=/run/secrets/maria_password
-      - MARIA_ROOT_PASSWORD=/run/secrets/maria_root_password
-    secrets:
-      - maria_password
-      - maria_root_password
+    deploy:
+      restart_policy:
+        condition: any
 
 volumes:
   wordpress_data:
@@ -71,7 +71,8 @@ volumes:
 
 networks:
   inception:
-    driver: bridge
+    driver: overlay
+    attachable: true
 
 secrets:
   maria_password:
@@ -82,5 +83,3 @@ secrets:
     file: ../secrets/wp_user_password.txt
   wp_admin_password:
     file: ../secrets/wp_admin_password.txt
-
-
