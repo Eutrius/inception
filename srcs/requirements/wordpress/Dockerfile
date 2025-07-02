@@ -2,7 +2,7 @@ FROM debian:bullseye
                    
 RUN apt update -y && \
     apt upgrade -y && \
-    apt install -y php7.4 php7.4-fpm php7.4-mysql wget unzip
+    apt install -y php7.4 php7.4-fpm php7.4-mysql wget unzip netcat
 
 RUN wget https://wordpress.org/latest.zip -O /tmp/wordpress.zip && \
     mkdir -p /var/www/wordpress && \

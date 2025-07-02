@@ -6,7 +6,10 @@ export MARIA_ROOT_PASSWORD=$(cat /run/secrets/maria_root_password)
 
 mariadbd-safe &
 
-sleep 5
+until nc -z localhost 3306; do
+	echo "waiting for mariadb"
+	sleep 1
+done
 
 echo "create database table"
 mariadb -u root -p"${MARIA_ROOT_PASSWORD}" -e "CREATE DATABASE IF NOT EXISTS \`${MARIA_DB_NAME}\`;"

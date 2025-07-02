@@ -29,12 +29,12 @@ deploy:
 
 down:
 	@docker stack rm $(STACK_NAME)
-	@echo "waiting for stack to be removed..."
-	@while docker stack services $(STACK_NAME) > /dev/null 2>&1; do \
+	@echo "waiting for all containers"
+	@while docker stack ps $(STACK_NAME) 2>/dev/null | grep -q .; do \
 		echo "still waiting..."; \
 		sleep 2; \
 	done
-	@echo "stack removed."
+	@echo "all containers down"
 
 status:
 	@docker stack services $(STACK_NAME)
