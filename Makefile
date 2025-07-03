@@ -10,9 +10,9 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = inception
+STACK_NAME = inception
+SERVICES = nginx wordpress mariadb redis
 COMPOSE_FILE = srcs/docker-compose.yml
-STACK_NAME = $(NAME)
 
 all: init-swarm build deploy
 
@@ -22,6 +22,7 @@ init-swarm:
 build:
 	@mkdir -p /home/jyriarte/data/wordpress
 	@mkdir -p /home/jyriarte/data/mariadb
+	@mkdir -p /home/jyriarte/data/redis
 	@docker compose -f $(COMPOSE_FILE) build
 
 deploy:
@@ -42,27 +43,15 @@ status:
 ps:
 	@docker stack ps $(STACK_NAME)
 
-logs-nginx:
-	@docker service logs --follow --tail 50 $(STACK_NAME)_nginx 2>/dev/null || echo "no nginx logs available"
-
-logs-wordpress:
-	@docker service logs --follow --tail 50 $(STACK_NAME)_wordpress 2>/dev/null || echo "no wordpress logs available"
-
-logs-mariadb:
-	@docker service logs --follow --tail 50 $(STACK_NAME)_mariadb 2>/dev/null || echo "no mariadb logs available"
-
 logs:
-	@echo "NGINX:"
-	@docker service logs --tail 20 $(STACK_NAME)_nginx 2>/dev/null || echo "no nginx logs"
-	@echo ""
-	@echo "WORDPRESS:"
-	@docker service logs --tail 20 $(STACK_NAME)_wordpress 2>/dev/null || echo "no wordpress logs" 
-	@echo ""
-	@echo "MARIADB:"
-	@docker service logs --tail 20 $(STACK_NAME)_mariadb 2>/dev/null || echo "no mariadb logs"
+	@for service in $(SERVICES); do \
+        echo ""; \
+		echo "$$service:"; \
+		docker service logs --tail 50 $(STACK_NAME)_$$service 2>/dev/null | grep . || echo "no logs available for $$service"; \
+    done
 
 logs-live:
-	@docker service logs --follow $(STACK_NAME)_nginx $(STACK_NAME)_wordpress $(STACK_NAME)_mariadb
+	@docker service logs --follow $(shell docker stack ps -q $(STACK_NAME))
 
 clean: down
 	@docker system prune -af
@@ -73,4 +62,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all init-swarm build deploy down status ps logs logs-nginx logs-wordpress logs-mariadb logs-live clean fclean re
+.PHONY: all init-swarm build deploy down status ps logs logs-live clean fclean re
