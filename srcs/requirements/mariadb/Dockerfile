@@ -2,7 +2,8 @@ FROM debian:bullseye
 
 RUN apt update -y && \
     apt upgrade -y && \
-    apt install -y mariadb-server netcat
+    apt install -y mariadb-server netcat && \
+	apt clean && rm -rf /var/lib/apt/lists/*
 
 COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/.
 COPY tools/docker-entrypoint.sh /usr/local/bin/
