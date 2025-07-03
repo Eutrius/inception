@@ -22,7 +22,7 @@ init-swarm:
 build:
 	@mkdir -p /home/jyriarte/data/wordpress
 	@mkdir -p /home/jyriarte/data/mariadb
-	@docker-compose -f $(COMPOSE_FILE) build
+	@docker compose -f $(COMPOSE_FILE) build
 
 deploy:
 	@docker stack deploy -c $(COMPOSE_FILE) $(STACK_NAME)

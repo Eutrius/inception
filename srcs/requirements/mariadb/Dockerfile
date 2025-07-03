@@ -9,6 +9,7 @@ COPY tools/docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 RUN mkdir -p /run/mysqld && \
-    chown -R root:root /run/mysqld
+    chown -R mysql:mysql /run/mysqld
 
-CMD ["docker-entrypoint.sh"]
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["mariadbd-safe"]

@@ -1,7 +1,7 @@
 services:
   mariadb:
     build: ./requirements/mariadb/.
-    image: requirements/mariadb:latest
+    image: requirements/mariadb
     deploy:
       restart_policy:
         condition: any
@@ -12,6 +12,7 @@ services:
     env_file:
       - .env
     environment:
+      WP_HOST: mariadb:3306
       MARIA_PASSWORD: /run/secrets/maria_password
       MARIA_ROOT_PASSWORD: /run/secrets/maria_root_password
     secrets:
@@ -20,7 +21,7 @@ services:
 
   wordpress:
     build: ./requirements/wordpress/.
-    image: requirements/wordpress:latest
+    image: requirements/wordpress
     volumes:
       - wordpress_data:/var/www/wordpress
     networks:
@@ -42,7 +43,7 @@ services:
 
   nginx:
     build: ./requirements/nginx/.
-    image: requirements/nginx:latest
+    image: requirements/nginx
     ports:
       - "443:443"
     volumes:
