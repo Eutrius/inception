@@ -21,8 +21,8 @@ init-swarm:
 
 build:
 	@mkdir -p /home/jyriarte/data/wordpress
-	@mkdir -p /home/jyriarte/data/mariadb
 	@mkdir -p /home/jyriarte/data/redis
+	@mkdir -p /home/jyriarte/data/mariadb
 	@docker compose -f $(COMPOSE_FILE) build
 
 deploy:
@@ -51,7 +51,10 @@ logs:
     done
 
 logs-live:
-	@docker service logs --follow $(shell docker stack ps -q $(STACK_NAME))
+	@for service in $(SERVICES); do \
+		docker service logs --follow $(STACK_NAME)_$$service & \
+	done; \
+	wait
 
 clean: down
 	@docker system prune -af
