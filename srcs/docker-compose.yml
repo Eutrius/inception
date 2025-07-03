@@ -33,6 +33,7 @@ services:
         condition: any
     environment:
       WP_HOST: mariadb:3306
+      REDIS_HOST: redis:6379
       MARIA_PASSWORD: /run/secrets/maria_password
       WP_USER_PASSWORD: /run/secrets/wp_user_password
       WP_ADMIN_PASSWORD: /run/secrets/wp_admin_password
@@ -40,6 +41,22 @@ services:
       - maria_password
       - wp_user_password
       - wp_admin_password
+
+  redis:
+    build: ./requirements/redis/.
+    image: requirements/redis
+    deploy:
+      restart_policy:
+        condition: any
+    networks:
+      - inception
+    volumes:
+      - redis_data:/data
+    environment:
+      WP_HOST: mariadb:3306
+      REDIS_PASSWORD: /run/secrets/redis_password
+    secrets:
+      - redis_password
 
   nginx:
     build: ./requirements/nginx/.
@@ -69,6 +86,12 @@ volumes:
       type: none
       o: bind
       device: /home/jyriarte/data/mariadb
+  redis_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/jyriarte/data/redis
 
 networks:
   inception:
@@ -84,3 +107,5 @@ secrets:
     file: ../secrets/wp_user_password.txt
   wp_admin_password:
     file: ../secrets/wp_admin_password.txt
+  redis_password:
+    file: ../secrets/redis_password.txt

@@ -61,6 +61,7 @@ clean: down
 
 fclean: clean
 	@sudo rm -rf /home/jyriarte/data
+	@docker volume ls -q --filter name=inception_ | xargs -r docker volume rm
 	@docker swarm leave --force 2>/dev/null || true
 
 re: fclean all
