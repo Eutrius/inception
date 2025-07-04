@@ -56,16 +56,15 @@ services:
   ftp:
     build: ./requirements/ftp/.
     image: requirements/ftp
-    ports:
-      - "21:21"
-      - "10000-10100:10000-10100"
-    volumes:
-      - wordpress_data:/var/www/wordpress
-      - ftp_data:/home/ftpuser/ftp/files
-    networks:
-      - inception
     env_file:
       - .env
+    ports:
+      - "21:21"
+      - "21000-21010:21000-21010"
+    volumes:
+      - wordpress_data:/var/www/wordpress
+    networks:
+      - inception
     deploy:
       restart_policy:
         condition: any
@@ -107,12 +106,6 @@ volumes:
       type: none
       o: bind
       device: /home/jyriarte/data/redis
-  ftp_data:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /home/jyriarte/data/ftp
 
 networks:
   inception:

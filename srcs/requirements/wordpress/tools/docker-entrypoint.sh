@@ -30,6 +30,7 @@ if [ ! -f wp-config.php ]; then
   wp config set WP_REDIS_PORT "$REDIS_PORT" --allow-root
   wp config set WP_REDIS_DATABASE 0 --allow-root
   wp config set WP_CACHE true --allow-root
+  
 else
   echo "wp-config.php already exists, skipping config creation."
 fi
@@ -59,7 +60,7 @@ if ! wp plugin is-installed redis-cache --allow-root; then
   wp plugin activate redis-cache --allow-root
   wp redis enable --allow-root
 else
-  echo "resdi plugin is already installed and activated."
+  echo "redis plugin is already installed and activated."
 fi
 
 echo "wordpress ready"

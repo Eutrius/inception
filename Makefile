@@ -6,7 +6,7 @@
 #    By: jyriarte <jyriarte@student.42roma.it>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/30 21:20:22 by jyriarte          #+#    #+#              #
-#    Updated: 2025/07/02 10:00:00 by jyriarte         ###   ########.fr        #
+#    Updated: 2025/07/05 01:37:00 by jyriarte         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,10 +20,8 @@ init-swarm:
 	@docker swarm init 2>/dev/null || echo "swarm already initialized"
 
 build:
-	@mkdir -p /home/jyriarte/data/wordpress
 	@mkdir -p /home/jyriarte/data/redis
 	@mkdir -p /home/jyriarte/data/mariadb
-	@mkdir -p /home/jyriarte/data/ftp
 	@docker compose -f $(COMPOSE_FILE) build
 
 deploy:
@@ -57,14 +55,16 @@ logs-live:
 	done; \
 	wait
 
-clean: down
+clean-db: down
+	@docker volume ls -q --filter name=inception_ | xargs -r docker volume rm
+	@sudo rm -rf /home/jyriarte/data
+
+clean: clean-db
 	@docker system prune -af
 
 fclean: clean
-	@sudo rm -rf /home/jyriarte/data
-	@docker volume ls -q --filter name=inception_ | xargs -r docker volume rm
 	@docker swarm leave --force 2>/dev/null || true
 
 re: fclean all
 
-.PHONY: all init-swarm build deploy down status ps logs logs-live clean fclean re
+.PHONY: all init-swarm build deploy down status ps logs logs-live clean-db clean fclean re 
