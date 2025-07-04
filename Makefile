@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 STACK_NAME = inception
-SERVICES = nginx wordpress mariadb redis
+SERVICES = nginx wordpress mariadb redis ftp
 COMPOSE_FILE = srcs/docker-compose.yml
 
 all: init-swarm build deploy
@@ -23,6 +23,7 @@ build:
 	@mkdir -p /home/jyriarte/data/wordpress
 	@mkdir -p /home/jyriarte/data/redis
 	@mkdir -p /home/jyriarte/data/mariadb
+	@mkdir -p /home/jyriarte/data/ftp
 	@docker compose -f $(COMPOSE_FILE) build
 
 deploy:

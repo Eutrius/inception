@@ -1,0 +1,5 @@
+# /etc/pam.d/vsftpd
+
+auth required pam_unis.so
+account required pam_unis.so
+session required pam_unis.so
