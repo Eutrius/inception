@@ -10,61 +10,39 @@
 #                                                                              #
 # **************************************************************************** #
 
-STACK_NAME = inception
-SERVICES = nginx wordpress mariadb redis ftp
 COMPOSE_FILE = srcs/docker-compose.yml
 
-all: init-swarm build deploy
-
-init-swarm:
-	@docker swarm init 2>/dev/null || echo "swarm already initialized"
+all: build deploy
 
 build:
-	@mkdir -p /home/jyriarte/data/redis
-	@mkdir -p /home/jyriarte/data/mariadb
+	@mkdir -p /home/jyriarte/data/{wordpress,redis,mariadb}
 	@docker compose -f $(COMPOSE_FILE) build
 
 deploy:
-	@docker stack deploy -c $(COMPOSE_FILE) $(STACK_NAME)
+	@docker compose -f $(COMPOSE_FILE) up -d
+
+up:
+	@docker compose --force-recreate -f $(COMPOSE_FILE) up -d
 
 down:
-	@docker stack rm $(STACK_NAME)
-	@echo "waiting for all containers"
-	@while docker stack ps $(STACK_NAME) 2>/dev/null | grep -q .; do \
-		echo "still waiting..."; \
-		sleep 2; \
-	done
-	@echo "all containers down"
-
-status:
-	@docker stack services $(STACK_NAME)
+	@docker compose -f $(COMPOSE_FILE) down
 
 ps:
-	@docker stack ps $(STACK_NAME)
+	@docker compose -f $(COMPOSE_FILE) ps
 
 logs:
-	@for service in $(SERVICES); do \
-        echo ""; \
-		echo "$$service:"; \
-		docker service logs --tail 50 $(STACK_NAME)_$$service 2>/dev/null | grep . || echo "no logs available for $$service"; \
-    done
+	@docker compose -f $(COMPOSE_FILE) logs
 
-logs-live:
-	@for service in $(SERVICES); do \
-		docker service logs --follow $(STACK_NAME)_$$service & \
-	done; \
-	wait
+watch:
+	@docker compose -f $(COMPOSE_FILE) logs --follow
 
-clean-db: down
-	@docker volume ls -q --filter name=inception_ | xargs -r docker volume rm
+clean: 
 	@sudo rm -rf /home/jyriarte/data
-
-clean: clean-db
-	@docker system prune -af
+	@docker compose -f $(COMPOSE_FILE) down --volumes
 
 fclean: clean
-	@docker swarm leave --force 2>/dev/null || true
+	@docker compose -f $(COMPOSE_FILE) down --rmi local
 
 re: fclean all
 
-.PHONY: all init-swarm build deploy down status ps logs logs-live clean-db clean fclean re 
+.PHONY: all build deploy up down ps logs watch clean fclean re
