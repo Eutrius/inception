@@ -15,7 +15,7 @@ COMPOSE_FILE = srcs/docker-compose.yml
 all: build deploy
 
 build:
-	@mkdir -p /home/jyriarte/data/{wordpress,redis,mariadb}
+	@mkdir -p /home/jyriarte/data/{wordpress,adminer,redis,mariadb}
 	@docker compose -f $(COMPOSE_FILE) build
 
 deploy:

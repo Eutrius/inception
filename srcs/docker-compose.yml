@@ -41,7 +41,24 @@ services:
       redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "sh", "/usr/local/bin/healthcheck.sh"]
+      test: ["CMD", "pgrep", "php-fpm7.4"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  adminer:
+    build: ./requirements/adminer/.
+    volumes:
+      - adminer_data:/var/www/adminer
+    networks:
+      - inception
+    restart: unless-stopped
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "pgrep", "php-fpm7.4"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -97,6 +114,7 @@ services:
       - "443:443"
     volumes:
       - wordpress_data:/var/www/wordpress
+      - adminer_data:/var/www/adminer
     networks:
       - inception
     env_file:
@@ -104,6 +122,8 @@ services:
     restart: unless-stopped
     depends_on:
       wordpress:
+        condition: service_healthy
+      adminer:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "https://localhost"]
@@ -119,6 +139,12 @@ volumes:
       type: none
       o: bind
       device: /home/jyriarte/data/wordpress
+  adminer_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/jyriarte/data/adminer
   mariadb_data:
     driver: local
     driver_opts:

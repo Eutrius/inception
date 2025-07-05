@@ -3,7 +3,7 @@ FROM debian:bullseye
 RUN apt update -y && \
     apt upgrade -y && \
     apt install -y php7.4 php7.4-fpm php7.4-mysql php7.4-redis php7.4-ftp \
-	wget unzip curl && \
+	wget unzip && \
     apt clean && rm -rf /var/lib/apt/lists/*
 
 RUN wget https://wordpress.org/latest.zip -O /tmp/wordpress.zip && \
