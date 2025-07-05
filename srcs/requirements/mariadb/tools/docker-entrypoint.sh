@@ -6,8 +6,8 @@ INIT_MARKER="/var/lib/mysql/.mariadb_initialized"
 if [ ! -f "$INIT_MARKER" ]; then
 export MARIA_PASSWORD=$(cat /run/secrets/maria_password)
 export MARIA_ROOT_PASSWORD=$(cat /run/secrets/maria_root_password)
-export MARIA_IP="${WP_HOST%%:*}"
-export MARIA_PORT="${WP_HOST#*:}"
+export MARIA_IP="${MARIA_HOST%%:*}"
+export MARIA_PORT="${MARIA_HOST#*:}"
 
 mariadbd-safe &
 

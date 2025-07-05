@@ -2,7 +2,7 @@ FROM debian:bullseye
 
 RUN apt update -y && \
     apt upgrade -y && \
-    apt install -y vsftpd && \
+    apt install -y vsftpd netcat && \
     apt clean && rm -rf /var/lib/apt/lists/*
 
 COPY conf/vsftpd.conf /etc/vsftpd.conf

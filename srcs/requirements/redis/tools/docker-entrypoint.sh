@@ -8,6 +8,5 @@ if grep -qE '^(requirepass|user default)' /etc/redis/redis.conf; then
   else
     echo "requirepass $REDIS_PASSWORD" >> /etc/redis/redis.conf
 fi
-
 echo "starting redis server"
 exec "$@"

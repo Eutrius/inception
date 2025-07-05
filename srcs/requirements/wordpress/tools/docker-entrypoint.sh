@@ -4,8 +4,8 @@ set -e
 export MARIA_PASSWORD=$(cat /run/secrets/maria_password)
 export WP_USER_PASSWORD=$(cat /run/secrets/wp_user_password)
 export WP_ADMIN_PASSWORD=$(cat /run/secrets/wp_admin_password)
-export MARIA_IP="${WP_HOST%%:*}"
-export MARIA_PORT="${WP_HOST#*:}"
+export MARIA_IP="${MARIA_HOST%%:*}"
+export MARIA_PORT="${MARIA_HOST#*:}"
 export REDIS_IP="${REDIS_HOST%%:*}"
 export REDIS_PORT="${REDIS_HOST#*:}"
 
@@ -24,13 +24,15 @@ if [ ! -f wp-config.php ]; then
     --dbname="$MARIA_DB_NAME" \
     --dbuser="$MARIA_USER" \
     --dbpass="$MARIA_PASSWORD" \
-    --dbhost="$WP_HOST"
+    --dbhost="$MARIA_HOST"
     
   wp config set WP_REDIS_HOST "$REDIS_IP" --allow-root
   wp config set WP_REDIS_PORT "$REDIS_PORT" --allow-root
-  wp config set WP_REDIS_DATABASE 0 --allow-root
+  wp config set WP_REDIS_PASSWORD "$(cat /run/secrets/redis_password)" --allow-root
   wp config set WP_CACHE true --allow-root
-  
+
+  wp config set WP_HOME "$WP_URL" --allow-root
+  wp config set WP_SITEURL "$WP_URL" --allow-root
 else
   echo "wp-config.php already exists, skipping config creation."
 fi

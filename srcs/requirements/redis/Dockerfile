@@ -9,8 +9,8 @@ COPY conf/redis.conf /etc/redis/redis.conf
 COPY tools/docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-RUN mkdir -p /var/lib/redis /var/log/redis && \
-    chown -R redis:redis /var/lib/redis /var/log/redis
+RUN mkdir -p /data && \
+    chown -R redis:redis /data
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["redis-server", "/etc/redis/redis.conf"]
