@@ -2,7 +2,7 @@ FROM debian:bullseye
 
 RUN apt update -y && \
     apt upgrade -y && \
-    apt install -y nginx openssl && \
+    apt install -y nginx openssl curl && \
 	apt clean && rm -rf /var/lib/apt/lists/*
 
 COPY conf/default /etc/nginx/sites-available/.

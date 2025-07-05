@@ -2,20 +2,13 @@
 set -e
 
 export FTP_USER_PASSWORD=$(cat /run/secrets/ftp_user_password)
-export WP_IP="${WP_HOST%%:*}"
-export WP_PORT="${WP_HOST#*:}"
-
-until nc -z $WP_IP $WP_PORT; do
-    echo "waiting for wordpress"
-    sleep 1
-done
 
 if ! id "$FTP_USER" &>/dev/null; then
     useradd -u 1001 -m -d /var/www/wordpress -s /bin/bash "$FTP_USER"
     echo "$FTP_USER:$FTP_USER_PASSWORD" | chpasswd
-    echo "user $FTP_USER created successfully"
+    echo "user created successfully"
 else
-    echo "user $FTP_USER already exists"
+    echo "user already exists"
 fi
 
 groupadd -g 1000 webgroup || true

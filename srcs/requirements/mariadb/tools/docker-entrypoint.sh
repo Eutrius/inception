@@ -6,14 +6,12 @@ INIT_MARKER="/var/lib/mysql/.mariadb_initialized"
 if [ ! -f "$INIT_MARKER" ]; then
 export MARIA_PASSWORD=$(cat /run/secrets/maria_password)
 export MARIA_ROOT_PASSWORD=$(cat /run/secrets/maria_root_password)
-export MARIA_IP="${MARIA_HOST%%:*}"
-export MARIA_PORT="${MARIA_HOST#*:}"
 
 mariadbd-safe &
 
-until nc -z $MARIA_IP $MARIA_PORT; do
-    echo "waiting for mariadb"
-    sleep 1
+until mysqladmin ping --silent; do
+echo "waiting for mariadb"
+  sleep 1
 done
 
 echo "set root password and auth plugin"

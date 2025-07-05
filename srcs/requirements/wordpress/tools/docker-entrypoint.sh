@@ -4,20 +4,8 @@ set -e
 export MARIA_PASSWORD=$(cat /run/secrets/maria_password)
 export WP_USER_PASSWORD=$(cat /run/secrets/wp_user_password)
 export WP_ADMIN_PASSWORD=$(cat /run/secrets/wp_admin_password)
-export MARIA_IP="${MARIA_HOST%%:*}"
-export MARIA_PORT="${MARIA_HOST#*:}"
 export REDIS_IP="${REDIS_HOST%%:*}"
 export REDIS_PORT="${REDIS_HOST#*:}"
-
-until nc -z $MARIA_IP $MARIA_PORT; do
-	echo "waiting for mariadb"
-	sleep 1
-done
-
-until nc -z $REDIS_IP $REDIS_PORT; do
-	echo "waiting for redis"
-	sleep 1
-done
 
 if [ ! -f wp-config.php ]; then
   wp config create --allow-root \
@@ -28,8 +16,8 @@ if [ ! -f wp-config.php ]; then
     
   wp config set WP_REDIS_HOST "$REDIS_IP" --allow-root
   wp config set WP_REDIS_PORT "$REDIS_PORT" --allow-root
-  wp config set WP_REDIS_PASSWORD "$(cat /run/secrets/redis_password)" --allow-root
   wp config set WP_CACHE true --allow-root
+  wp config set WP_REDIS_PASSWORD "$(cat /run/secrets/redis_password)" --allow-root > /dev/null
 
   wp config set WP_HOME "$WP_URL" --allow-root
   wp config set WP_SITEURL "$WP_URL" --allow-root
@@ -54,7 +42,7 @@ if ! wp user get "$WP_USER" --field=ID --allow-root > /dev/null 2>&1; then
     --user_pass="$WP_USER_PASSWORD" \
     --allow-root
 else
-  echo "user $WP_USER already exists, skipping user creation."
+  echo "user already exists, skipping user creation."
 fi
 
 if ! wp plugin is-installed redis-cache --allow-root; then

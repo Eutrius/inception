@@ -3,7 +3,7 @@ FROM debian:bullseye
 RUN apt update -y && \
     apt upgrade -y && \
     apt install -y php7.4 php7.4-fpm php7.4-mysql php7.4-redis php7.4-ftp \
-	wget unzip netcat redis-server vsftpd&& \
+	wget unzip curl && \
     apt clean && rm -rf /var/lib/apt/lists/*
 
 RUN wget https://wordpress.org/latest.zip -O /tmp/wordpress.zip && \
@@ -20,8 +20,8 @@ RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.ph
     mv wp-cli.phar /usr/local/bin/wp
 
 COPY conf/www.conf /etc/php/7.4/fpm/pool.d/.
-COPY tools/docker-entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+COPY tools/docker-entrypoint.sh tools/healthcheck.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh /usr/local/bin/healthcheck.sh
 
 WORKDIR /var/www/wordpress
 
