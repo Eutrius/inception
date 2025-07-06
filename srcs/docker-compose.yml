@@ -34,7 +34,7 @@ services:
       - redis_password
       - maria_password
       - wp_user_password
-      - wp_admin_password
+      - wp_root_password
     depends_on:
       mariadb:
         condition: service_healthy
@@ -125,12 +125,37 @@ services:
         condition: service_healthy
       adminer:
         condition: service_healthy
+      portainer:
+        condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "https://localhost"]
+      test: ["CMD", "curl","-k", "-f", "https://localhost"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 10s
+
+  portainer:
+      build: ./requirements/portainer/.
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock 
+        - portainer_data:/data
+      networks:
+        - inception
+      env_file:
+        - .env
+      ports:
+        - "9443:9443"
+      restart: unless-stopped
+      environment:
+        PT_USER_PASSWORD: /run/secrets/pt_user_password
+      secrets:
+        - pt_user_password
+      healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:9000/api/system/status"]
+        interval: 30s
+        timeout: 10s
+        retries: 3
+        start_period: 30s
 
 volumes:
   wordpress_data:
@@ -157,6 +182,12 @@ volumes:
       type: none
       o: bind
       device: /home/jyriarte/data/redis
+  portainer_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/jyriarte/data/redis
 
 networks:
   inception:
@@ -168,9 +199,11 @@ secrets:
     file: ../secrets/maria_root_password.txt
   wp_user_password:
     file: ../secrets/wp_user_password.txt
-  wp_admin_password:
-    file: ../secrets/wp_admin_password.txt
+  wp_root_password:
+    file: ../secrets/wp_root_password.txt
   redis_password:
     file: ../secrets/redis_password.txt
   ftp_user_password:
     file: ../secrets/ftp_user_password.txt
+  pt_user_password:
+    file: ../secrets/pt_user_password.txt

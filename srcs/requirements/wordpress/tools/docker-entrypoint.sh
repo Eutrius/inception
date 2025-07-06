@@ -3,7 +3,7 @@ set -e
 
 export MARIA_PASSWORD=$(cat /run/secrets/maria_password)
 export WP_USER_PASSWORD=$(cat /run/secrets/wp_user_password)
-export WP_ADMIN_PASSWORD=$(cat /run/secrets/wp_admin_password)
+export WP_ROOT_PASSWORD=$(cat /run/secrets/wp_root_password)
 export REDIS_IP="${REDIS_HOST%%:*}"
 export REDIS_PORT="${REDIS_HOST#*:}"
 
@@ -29,9 +29,9 @@ if ! wp core is-installed --allow-root; then
   wp core install --allow-root \
     --url="$WP_URL" \
     --title="$WP_TITLE" \
-    --admin_user="$WP_ADMIN_USER" \
-    --admin_password="$WP_ADMIN_PASSWORD" \
-    --admin_email="$WP_ADMIN_EMAIL"
+    --admin_user="$WP_ROOT_USER" \
+    --admin_password="$WP_ROOT_PASSWORD" \
+    --admin_email="$WP_ROOT_EMAIL"
 else
   echo "wp core already installed, skipping core install."
 fi
