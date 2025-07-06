@@ -1,57 +1,68 @@
-# conf/nginx.conf
 server {
-    listen 443 ssl;
-    server_name jyriarte.42.fr;
+	listen 443 ssl;
+	server_name jyriarte.42.fr;
 
-    ssl_certificate /etc/ssl/certs/nginx.crt;
-    ssl_certificate_key /etc/ssl/private/nginx.key;
-    ssl_protocols TLSv1.2 TLSv1.3;
+	ssl_certificate /etc/ssl/certs/nginx.crt;
+	ssl_certificate_key /etc/ssl/private/nginx.key;
+	ssl_protocols TLSv1.2 TLSv1.3;
 
-    # WordPress configuration
-    root /var/www/wordpress;
-    index index.php index.html index.htm;
+	root /var/www/wordpress;
+	index index.php index.html index.htm;
 
-    location / {
-        try_files $uri $uri/ /index.php?$args;
-    }
+	location / {
+		try_files $uri $uri/ /index.php?$args;
+	}
 
-    location ~ \.php$ {
-        include fastcgi_params;
-        fastcgi_index index.php;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_pass wordpress:9000;
-    }
+	location ~ \.php$ {
+		include fastcgi_params;
+		fastcgi_index index.php;
+		fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+		fastcgi_pass wordpress:9000;
+	}
 
-    # Adminer configuration
-    location /adminer/ {
-        root /var/www/;
-        index adminer.php;
-        try_files $uri $uri/ /adminer/adminer.php?$args;
-        location ~ \.php$ {
-            include fastcgi_params;
-            fastcgi_index adminer.php;
-            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-            fastcgi_pass adminer:9001;
-        }
-    }
+	location /adminer/ {
+		root /var/www/;
+		index adminer.php;
+		try_files $uri $uri/ /adminer/adminer.php?$args;
 
-    location = /adminer {
-        return 301 /adminer/;
-    }
+		location ~ \.php$ {
+			include fastcgi_params;
+			fastcgi_index adminer.php;
+			fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+			fastcgi_pass adminer:9001;
+		}
+	}
 
-    location /portainer/ {
-        proxy_pass https://portainer:9443/;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_read_timeout 900s;
-    }
+	location = /adminer {
+		return 301 /adminer/;
+	}
 
-    location = /portainer {
-        return 301 /portainer/;
-    }
+	location /portainer/ {
+		proxy_pass https://portainer:9443/;
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Forwarded-Proto $scheme;
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection "upgrade";
+		proxy_read_timeout 900s;
+	}
+
+	location = /portainer {
+		return 301 /portainer/;
+	}
+
+	location /portfolio/ {
+		proxy_pass http://portfolio:3000/;
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection 'upgrade';
+		proxy_set_header Host $host;
+		proxy_cache_bypass $http_upgrade;
+	}
+
+	location = /portfolio {
+		return 301 /portfolio/;
+	}
 }

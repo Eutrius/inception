@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Eutrius Portfolio</title>
+		<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+			rel="stylesheet"
+		/>
+		<link href="styles.css" rel="stylesheet" />
+		<script src="index.js" defer></script>
+	</head>
+	<body>
+		<header>
+			<div class="header-bg"></div>
+			<div class="container">
+				<div class="header-content">
+					<div class="profile-image">
+						<i class="fas fa-code"></i>
+					</div>
+					<h1 class="name">Eutrius</h1>
+					<p class="title">Junior Software Developer</p>
+					<div class="social-links">
+						<a
+							href="https://github.com/Eutrius"
+							class="social-link"
+							target="_blank"
+							rel="noopener"
+						>
+							<i class="fab fa-github"></i>
+						</a>
+						<a href="mailto:vincentyriarte@gmail.com" class="social-link">
+							<i class="fas fa-envelope"></i>
+						</a>
+						<a
+							href="https://www.linkedin.com/in/vincentyriarte/"
+							class="social-link"
+							target="_blank"
+							rel="noopener"
+						>
+							<i class="fab fa-linkedin"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+		</header>
+
+		<nav>
+			<div class="container">
+				<div class="nav-container">
+					<ul class="nav-links">
+						<li><a href="#about" class="nav-link">About</a></li>
+						<li><a href="#projects" class="nav-link">Projects</a></li>
+						<li><a href="#contact" class="nav-link">Contact</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<section id="about" class="about">
+			<div class="container">
+				<h2 class="section-title">About Me</h2>
+				<p class="section-subtitle">
+					Welcome to my portfolio.
+				</p>
+
+				<div class="about-content">
+					<div class="about-text">
+						<p>
+							I am a dedicated and enthusiastic developer with a strong
+							foundation in C and a growing expertise in web technologies. My
+							journey in programming has been driven by a passion for
+							problem-solving and a desire to create efficient and elegant
+							solutions.
+						</p>
+						<p>
+							The projects you see here are a testament to my
+							learning and my commitment to mastering new skills. When I'm not
+							coding, I enjoy exploring new technologies and contributing to
+							open-source projects.
+						</p>
+					</div>
+
+					<div class="skills-grid">
+						<div class="skill-category">
+							<h3><i class="fas fa-code"></i> Languages</h3>
+							<div class="skill-tags">
+								<span class="skill-tag">C</span>
+								<span class="skill-tag">C++</span>
+								<span class="skill-tag">Lua</span>
+								<span class="skill-tag">JavaScript</span>
+								<span class="skill-tag">Bash</span>
+							</div>
+						</div>
+
+						<div class="skill-category">
+							<h3><i class="fas fa-tools"></i> Technologies</h3>
+							<div class="skill-tags">
+								<span class="skill-tag">Neovim</span>
+								<span class="skill-tag">Tmux</span>
+								<span class="skill-tag">Linux</span>
+								<span class="skill-tag">Git</span>
+								<span class="skill-tag">Docker</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section id="projects" class="projects">
+			<div class="container">
+				<h2 class="section-title">Featured Projects</h2>
+				<div class="projects-grid">
+
+					<div class="project-card">
+						<div class="project-header">
+							<div class="project-icon">
+								<i class="fas fa-sitemap"></i>
+							</div>
+							<h3 class="project-title">Otree.nvim</h3>
+							<p class="project-subtitle">Advanced File Tree Explorer</p>
+						</div>
+
+						<div class="project-body">
+							<p class="project-description">
+								A lightweight and highly customizable file tree explorer for Neovim, built for speed, simplicity, and seamless user experience. Features tight integration with oil.nvim for elegant file operations workflow.
+							</p>
+
+							<div class="project-features">
+								<h4>Key Features</h4>
+								<ul class="feature-list">
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Lightning-fast file tree using fd</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Seamless oil.nvim integration</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Customizable icons & themes</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Floating window support</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Advanced keybinding system</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Hidden files toggle</span>
+									</li>
+								</ul>
+							</div>
+
+							<div class="project-tech">
+								<span class="tech-tag">Lua</span>
+								<span class="tech-tag">Neovim</span>
+								<span class="tech-tag">Oil.nvim</span>
+								<span class="tech-tag">File Management</span>
+							</div>
+
+							<div class="project-links">
+								<a href="https://github.com/Eutrius/Otree.nvim" class="project-link primary" target="_blank" rel="noopener">
+									<i class="fab fa-github"></i>
+									View on GitHub
+								</a>
+								<a href="#" class="project-link secondary">
+									<i class="fas fa-book"></i>
+									Documentation
+								</a>
+							</div>
+						</div>
+					</div>
+
+					<div class="project-card">
+						<div class="project-header">
+							<div class="project-icon">
+								<i class="fas fa-terminal"></i>
+							</div>
+							<h3 class="project-title">MiniShell</h3>
+							<p class="project-subtitle">UNIX Shell Implementation</p>
+						</div>
+
+						<div class="project-body">
+							<p class="project-description">
+								A fully functional and robust UNIX shell developed as part of
+								the 42 School curriculum. This project replicates the behavior
+								of a real shell while exploring complex C programming concepts,
+								process management, and system calls.
+							</p>
+
+							<div class="project-features">
+								<h4>Key Features</h4>
+								<ul class="feature-list">
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Command parsing & execution</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Built-in commands (cd, echo, env, etc.)</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Pipe and redirection support</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Environment variable handling</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Signal handling</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Error handling & memory management</span>
+									</li>
+								</ul>
+							</div>
+
+							<div class="project-tech">
+								<span class="tech-tag">C</span>
+								<span class="tech-tag">System Programming</span>
+								<span class="tech-tag">UNIX</span>
+								<span class="tech-tag">42 School</span>
+							</div>
+
+							<div class="project-links">
+								<a
+									href="https://github.com/Eutrius/minishell"
+									class="project-link primary"
+									target="_blank"
+									rel="noopener"
+								>
+									<i class="fab fa-github"></i>
+									View on GitHub
+								</a>
+							</div>
+						</div>
+					</div>
+
+					<div class="project-card">
+						<div class="project-header">
+							<div class="project-icon">
+								<i class="fas fa-cube"></i>
+							</div>
+							<h3 class="project-title">MiniRT</h3>
+							<p class="project-subtitle">Ray Tracing Engine</p>
+						</div>
+
+						<div class="project-body">
+							<p class="project-description">
+								An educational ray tracing engine that introduces the
+								fundamentals of computer graphics and 3D rendering. Developed as
+								part of the 42 curriculum, this project demonstrates advanced
+								mathematical concepts and graphics programming.
+							</p>
+
+							<div class="project-features">
+								<h4>Key Features</h4>
+								<ul class="feature-list">
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>3D scene rendering</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Light and shadow calculations</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Multiple geometric primitives</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Camera positioning & movement</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Material properties</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Scene file parsing</span>
+									</li>
+								</ul>
+							</div>
+
+							<div class="project-tech">
+								<span class="tech-tag">C</span>
+								<span class="tech-tag">Ray Tracing</span>
+								<span class="tech-tag">Computer Graphics</span>
+								<span class="tech-tag">Mathematics</span>
+							</div>
+
+							<div class="project-links">
+								<a
+									href="https://github.com/Eutrius/miniRT"
+									class="project-link primary"
+									target="_blank"
+									rel="noopener"
+								>
+									<i class="fab fa-github"></i>
+									View on GitHub
+								</a>
+							</div>
+						</div>
+					</div>
+
+					<div class="project-card">
+						<div class="project-header">
+							<div class="project-icon">
+								<i class="fas fa-users"></i>
+							</div>
+							<h3 class="project-title">Philosophers</h3>
+							<p class="project-subtitle">Threading & Synchronization</p>
+						</div>
+
+						<div class="project-body">
+							<p class="project-description">
+								A solution to the classic dining philosophers problem,
+								demonstrating advanced concepts in concurrent programming,
+								thread synchronization, and resource management. Implements
+								mutex and semaphore-based solutions.
+							</p>
+
+							<div class="project-features">
+								<h4>Key Features</h4>
+								<ul class="feature-list">
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Multi-threaded implementation</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Deadlock prevention</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Mutex synchronization</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Resource sharing management</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Performance optimization</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Memory safety</span>
+									</li>
+								</ul>
+							</div>
+
+							<div class="project-tech">
+								<span class="tech-tag">C</span>
+								<span class="tech-tag">Threading</span>
+								<span class="tech-tag">Concurrency</span>
+								<span class="tech-tag">Synchronization</span>
+							</div>
+
+							<div class="project-links">
+								<a
+									href="https://github.com/Eutrius/philosophers"
+									class="project-link primary"
+									target="_blank"
+									rel="noopener"
+								>
+									<i class="fab fa-github"></i>
+									View on GitHub
+								</a>
+							</div>
+						</div>
+					</div>
+
+					<div class="project-card">
+						<div class="project-header">
+							<div class="project-icon">
+								<i class="fas fa-cogs"></i>
+							</div>
+							<h3 class="project-title">Dotfiles</h3>
+							<p class="project-subtitle">Development Environment</p>
+						</div>
+
+						<div class="project-body">
+							<p class="project-description">
+								A carefully curated collection of configuration files for
+								Neovim, tmux, and zsh. These dotfiles represent an optimized
+								development environment focused on productivity and efficiency.
+							</p>
+
+							<div class="project-features">
+								<h4>Key Features</h4>
+								<ul class="feature-list">
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Neovim configuration</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Tmux session management</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Zsh shell customization</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Plugin management</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Keybinding optimization</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Cross-platform compatibility</span>
+									</li>
+								</ul>
+							</div>
+
+							<div class="project-tech">
+								<span class="tech-tag">Shell</span>
+								<span class="tech-tag">Neovim</span>
+								<span class="tech-tag">Tmux</span>
+								<span class="tech-tag">Configuration</span>
+							</div>
+
+							<div class="project-links">
+								<a
+									href="https://github.com/Eutrius/dotfiles"
+									class="project-link primary"
+									target="_blank"
+									rel="noopener"
+								>
+									<i class="fab fa-github"></i>
+									View on GitHub
+								</a>
+							</div>
+						</div>
+					</div>
+
+					<div class="project-card">
+						<div class="project-header">
+							<div class="project-icon">
+								<i class="fas fa-blog"></i>
+							</div>
+							<h3 class="project-title">Bloglist</h3>
+							<p class="project-subtitle">Blog Management Application</p>
+						</div>
+
+						<div class="project-body">
+							<p class="project-description">
+								A full-stack blog management application built with modern
+								JavaScript technologies. Features user authentication, blog post
+								creation, and interactive user interfaces for managing blog
+								content.
+							</p>
+
+							<div class="project-features">
+								<h4>Key Features</h4>
+								<ul class="feature-list">
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>User authentication</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Blog post CRUD operations</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Interactive user interface</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>RESTful API design</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Database integration</span>
+									</li>
+									<li class="feature-item">
+										<i class="fas fa-circle"></i>
+										<span>Responsive design</span>
+									</li>
+								</ul>
+							</div>
+
+							<div class="project-tech">
+								<span class="tech-tag">JavaScript</span>
+								<span class="tech-tag">Node.js</span>
+								<span class="tech-tag">Full Stack</span>
+								<span class="tech-tag">Web Development</span>
+							</div>
+
+							<div class="project-links">
+								<a
+									href="https://github.com/Eutrius/Bloglist"
+									class="project-link primary"
+									target="_blank"
+									rel="noopener"
+								>
+									<i class="fab fa-github"></i>
+									View on GitHub
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section id="contact" class="contact">
+			<div class="container">
+				<div class="contact-content">
+					<h2 class="section-title">Let's Connect</h2>
+					<p class="section-subtitle">
+						Interested in collaboration or have questions about my projects?
+					</p>
+					<div class="social-links">
+						<a
+							href="https://github.com/Eutrius"
+							class="social-link"
+							target="_blank"
+							rel="noopener"
+						>
+							<i class="fab fa-github"></i>
+						</a>
+						<a href="mailto:vincentyriarte@gmail.com" class="social-link">
+							<i class="fas fa-envelope"></i>
+						</a>
+						<a
+							href="https://www.linkedin.com/in/vincentyriarte/"
+							class="social-link"
+							target="_blank"
+							rel="noopener"
+						>
+							<i class="fab fa-linkedin"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<footer>
+			<div class="container">
+				<p>&copy; 2025 Eutrius. All rights reserved.</p>
+			</div>
+		</footer>
+	</body>
+</html>

@@ -11,11 +11,12 @@
 # **************************************************************************** #
 
 COMPOSE_FILE = srcs/docker-compose.yml
+VOLUME_DIR = /home/jyriarte/data
 
 all: build deploy
 
 build:
-	@mkdir -p /home/jyriarte/data/{wordpress,adminer,redis,mariadb,portainer}
+	@mkdir -p $(VOLUME_DIR)/{wordpress,adminer,redis,mariadb,portfolio,portainer}
 	@docker compose -f $(COMPOSE_FILE) build
 
 deploy:
@@ -37,11 +38,11 @@ watch:
 	@docker compose -f $(COMPOSE_FILE) logs --follow
 
 clean: 
-	@sudo rm -rf /home/jyriarte/data
-	@docker compose -f $(COMPOSE_FILE) down --volumes
+	@sudo rm -rf $(VOLUME_DIR)
+	@docker compose -f $(COMPOSE_FILE) down --volumes --rmi local
 
 fclean: clean
-	@docker compose -f $(COMPOSE_FILE) down --rmi local
+	@docker system prune -a
 
 re: fclean all
 

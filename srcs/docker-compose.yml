@@ -1,6 +1,7 @@
 services:
   mariadb:
     build: ./requirements/mariadb/.
+    container_name: mariadb
     restart: unless-stopped
     volumes:
       - mariadb_data:/var/lib/mysql
@@ -20,13 +21,14 @@ services:
 
   wordpress:
     build: ./requirements/wordpress/.
+    container_name: wordpress
+    restart: unless-stopped
     volumes:
       - wordpress_data:/var/www/wordpress
     networks:
       - inception
     env_file:
       - .env
-    restart: unless-stopped
     environment:
       MARIA_HOST: mariadb:3306
       REDIS_HOST: redis:6379
@@ -47,30 +49,43 @@ services:
       retries: 5
       start_period: 10s
 
-  adminer:
-    build: ./requirements/adminer/.
+  nginx:
+    build: ./requirements/nginx/.
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "443:443"
     volumes:
+      - wordpress_data:/var/www/wordpress
       - adminer_data:/var/www/adminer
     networks:
       - inception
-    restart: unless-stopped
+    env_file:
+      - .env
     depends_on:
-      mariadb:
+      wordpress:
+        condition: service_healthy
+      adminer:
+        condition: service_healthy
+      portfolio:
+        condition: service_healthy
+      portainer:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "pgrep", "php-fpm7.4"]
+      test: ["CMD", "curl", "-k", "-f", "https://localhost"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 10s
 
   redis:
-    build: ./requirements/redis/.
+    build: ./requirements/bonus/redis/.
+    container_name: redis
     restart: unless-stopped
-    networks:
-      - inception
     volumes:
       - redis_data:/data
+    networks:
+      - inception
     environment:
       REDIS_PASSWORD: /run/secrets/redis_password
     secrets:
@@ -80,12 +95,12 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 5s
+      start_period: 10s
 
   ftp:
-    build: ./requirements/ftp/.
-    env_file:
-      - .env
+    build: ./requirements/bonus/ftp/.
+    container_name: ftp
+    restart: unless-stopped
     ports:
       - "21:21"
       - "21000-21010:21000-21010"
@@ -93,9 +108,10 @@ services:
       - wordpress_data:/var/www/wordpress
     networks:
       - inception
+    env_file:
+      - .env
     environment:
       WP_HOST: wordpress:9000
-    restart: unless-stopped
     secrets:
       - ftp_user_password
     depends_on:
@@ -108,86 +124,98 @@ services:
       retries: 5
       start_period: 10s
 
-  nginx:
-    build: ./requirements/nginx/.
-    ports:
-      - "443:443"
+  adminer:
+    build: ./requirements/bonus/adminer/.
+    container_name: adminer
+    restart: unless-stopped
     volumes:
-      - wordpress_data:/var/www/wordpress
       - adminer_data:/var/www/adminer
     networks:
       - inception
-    env_file:
-      - .env
-    restart: unless-stopped
     depends_on:
-      wordpress:
-        condition: service_healthy
-      adminer:
-        condition: service_healthy
-      portainer:
+      mariadb:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl","-k", "-f", "https://localhost"]
+      test: ["CMD", "pgrep", "php-fpm7.4"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  portfolio:
+    build: ./requirements/bonus/portfolio/.
+    container_name: portfolio
+    restart: unless-stopped
+    volumes:
+      - portfolio_data:/usr/src/app/
+    networks:
+      - inception
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/status"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 10s
 
   portainer:
-      build: ./requirements/portainer/.
-      volumes:
-        - /var/run/docker.sock:/var/run/docker.sock 
-        - portainer_data:/data
-      networks:
-        - inception
-      env_file:
-        - .env
-      ports:
-        - "9443:9443"
-      restart: unless-stopped
-      environment:
-        PT_USER_PASSWORD: /run/secrets/pt_user_password
-      secrets:
-        - pt_user_password
-      healthcheck:
-        test: ["CMD", "curl", "-f", "http://localhost:9000/api/system/status"]
-        interval: 30s
-        timeout: 10s
-        retries: 3
-        start_period: 30s
+    build: ./requirements/bonus/portainer/.
+    container_name: portainer
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    networks:
+      - inception
+    env_file:
+      - .env
+    environment:
+      PT_USER_PASSWORD: /run/secrets/pt_user_password
+    secrets:
+      - pt_user_password
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/api/system/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
 
 volumes:
-  wordpress_data:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /home/jyriarte/data/wordpress
-  adminer_data:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /home/jyriarte/data/adminer
   mariadb_data:
     driver: local
     driver_opts:
       type: none
       o: bind
       device: /home/jyriarte/data/mariadb
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/jyriarte/data/wordpress
   redis_data:
     driver: local
     driver_opts:
       type: none
       o: bind
       device: /home/jyriarte/data/redis
+  portfolio_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/jyriarte/data/portfolio
+  adminer_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/jyriarte/data/adminer
   portainer_data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/jyriarte/data/redis
+      device: /home/jyriarte/data/portainer
 
 networks:
   inception:
