@@ -16,8 +16,7 @@ VOLUME_DIR = /home/jyriarte/data
 all: build deploy
 
 build:
-	@mkdir -p $(VOLUME_DIR)/{wordpress,adminer,redis,mariadb,portfolio,portainer}
-	@docker compose -f $(COMPOSE_FILE) build
+	@bash -c "mkdir -p $(VOLUME_DIR)/{wordpress,adminer,redis,mariadb,portfolio,portainer}"
 
 deploy:
 	@docker compose -f $(COMPOSE_FILE) up -d
