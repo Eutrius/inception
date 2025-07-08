@@ -17,6 +17,7 @@ all: build deploy
 
 build:
 	@bash -c "mkdir -p $(VOLUME_DIR)/{wordpress,adminer,redis,mariadb,portfolio,portainer}"
+	@docker compose -f $(COMPOSE_FILE) build
 
 deploy:
 	@docker compose -f $(COMPOSE_FILE) up -d
