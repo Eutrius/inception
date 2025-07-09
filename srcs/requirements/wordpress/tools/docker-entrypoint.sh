@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-export MARIA_PASSWORD=$(cat /run/secrets/maria_password)
+export MARIA_USER_PASSWORD=$(cat /run/secrets/maria_user_password)
 export WP_USER_PASSWORD=$(cat /run/secrets/wp_user_password)
 export WP_ROOT_PASSWORD=$(cat /run/secrets/wp_root_password)
 export REDIS_IP="${REDIS_HOST%%:*}"
@@ -11,7 +11,7 @@ if [ ! -f wp-config.php ]; then
   wp config create --allow-root \
     --dbname="$MARIA_DB_NAME" \
     --dbuser="$MARIA_USER" \
-    --dbpass="$MARIA_PASSWORD" \
+    --dbpass="$MARIA_USER_PASSWORD" \
     --dbhost="$MARIA_HOST"
     
   wp config set WP_REDIS_HOST "$REDIS_IP" --allow-root

@@ -172,24 +172,24 @@ Create a `.env` file in the `srcs/` directory with:
 
 ```bash
 # Domain Configuration
-DOMAIN_NAME=jyriarte.42.fr
+WP_URL=https://jyriarte.42.fr
 
 # Database Configuration
-MARIA_DB=wordpress
-MARIA_USER=wp_user
-MARIA_HOST=mariadb
+MARIA_DB_NAME=wordpress_db
+MARIA_USER=db_user
 
 # WordPress Configuration
-WP_TITLE="My WordPress Site"
-WP_USER=admin
-WP_EMAIL=admin@example.com
+WP_TITLE="Inception"
+WP_ROOT_USER=wp_root
+WP_ROOT_EMAIL=wp_root@example.com
+WP_USER=wp_user
+WP_USER_EMAIL=wp_user@example.com
 
 # FTP Configuration
 FTP_USER=ftp_user
-FTP_PATH=/var/www/wordpress
 
 # Portainer Configuration
-PT_USER=portainer_admin
+PT_USER=pt_user
 ```
 
 ### Secret Management
@@ -198,7 +198,7 @@ Create password files in `../secrets/`:
 
 ```bash
 mkdir -p ../secrets
-echo "your_maria_password" > ../secrets/maria_password.txt
+echo "your_maria_user_password" > ../secrets/maria_user_password.txt
 echo "your_root_password" > ../secrets/maria_root_password.txt
 echo "your_wp_user_password" > ../secrets/wp_user_password.txt
 echo "your_wp_root_password" > ../secrets/wp_root_password.txt
@@ -264,7 +264,7 @@ inception/
 │           ├── portfolio/
 │           └── portainer/
 └── secrets/
-    ├── maria_password.txt
+    ├── maria_user_password.txt
     ├── maria_root_password.txt
     ├── wp_user_password.txt
     ├── wp_root_password.txt

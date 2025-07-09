@@ -4,7 +4,7 @@ set -e
 INIT_MARKER="/var/lib/mysql/.mariadb_initialized"
 
 if [ ! -f "$INIT_MARKER" ]; then
-export MARIA_PASSWORD=$(cat /run/secrets/maria_password)
+export MARIA_USER_PASSWORD=$(cat /run/secrets/maria_user_password)
 export MARIA_ROOT_PASSWORD=$(cat /run/secrets/maria_root_password)
 
 mariadbd-safe &
@@ -19,7 +19,7 @@ mariadb -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED VIA mysql_native_pa
 
 echo "create database and user"
 mariadb -u root -p"${MARIA_ROOT_PASSWORD}" -e "CREATE DATABASE IF NOT EXISTS \`${MARIA_DB_NAME}\`;"
-mariadb -u root -p"${MARIA_ROOT_PASSWORD}" -e "CREATE USER IF NOT EXISTS '${MARIA_USER}'@'%' IDENTIFIED BY '${MARIA_PASSWORD}';"
+mariadb -u root -p"${MARIA_ROOT_PASSWORD}" -e "CREATE USER IF NOT EXISTS '${MARIA_USER}'@'%' IDENTIFIED BY '${MARIA_USER_PASSWORD}';"
 mariadb -u root -p"${MARIA_ROOT_PASSWORD}" -e "GRANT ALL PRIVILEGES ON \`${MARIA_DB_NAME}\`.* TO '${MARIA_USER}'@'%';"
 mariadb -u root -p"${MARIA_ROOT_PASSWORD}" -e "FLUSH PRIVILEGES;"
 
